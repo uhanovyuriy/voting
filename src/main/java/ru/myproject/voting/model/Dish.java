@@ -1,27 +1,46 @@
 package ru.myproject.voting.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "dishes")
 public class Dish extends AbstractBaseEntity {
 
+    @Column(name = "name", nullable = false)
+    @NotBlank
+    @Size(min = 2, max = 50)
+    private String name;
+
     @Column(name = "price", nullable = false)
     @NotBlank
     private Integer price;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "restaurant_id")
-    private Restaurant restaurant;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @NotBlank
+    Restaurant restaurant;
 
     public Dish() {
     }
 
     public Dish(Integer id, String name, Integer price) {
         super.id = id;
-        super.name = name;
+        this.name = name;
         this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getPrice() {

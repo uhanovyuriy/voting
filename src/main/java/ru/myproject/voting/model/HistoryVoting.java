@@ -1,5 +1,8 @@
 package ru.myproject.voting.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -8,16 +11,20 @@ import java.time.LocalDateTime;
 @Table(name = "history_voting")
 public class HistoryVoting extends AbstractBaseEntity{
 
-    @Column(name = "dateTime_voting", nullable = false)
+    @Column(name = "date_time_voting", nullable = false)
     @NotBlank
     private LocalDateTime dateTimeVoting;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @NotBlank
     private User user;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restaurant_id")
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @NotBlank
     private Restaurant restaurant;
 
     public HistoryVoting() {
@@ -28,14 +35,6 @@ public class HistoryVoting extends AbstractBaseEntity{
         this.dateTimeVoting = dateTimeVoting;
         this.user = user;
         this.restaurant = restaurant;
-    }
-
-    public LocalDateTime getDateTimeVoting() {
-        return dateTimeVoting;
-    }
-
-    public void setDateTimeVoting(LocalDateTime dateTimeVoting) {
-        this.dateTimeVoting = dateTimeVoting;
     }
 
     public User getUser() {
@@ -54,11 +53,19 @@ public class HistoryVoting extends AbstractBaseEntity{
         this.restaurant = restaurant;
     }
 
+    public LocalDateTime getDateTimeVoting() {
+        return dateTimeVoting;
+    }
+
+    public void setDateTimeVoting(LocalDateTime dateTimeVoting) {
+        this.dateTimeVoting = dateTimeVoting;
+    }
+
     @Override
     public String toString() {
         return "HistoryVoting{" +
                 "dateTimeVoting=" + dateTimeVoting +
-                ", userId=" + user.getName() +
+                ", userName=" + user.getName() +
                 ", restaurant_name=" + restaurant.getName() +
                 '}';
     }

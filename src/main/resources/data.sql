@@ -17,11 +17,11 @@ INSERT INTO user_roles (role, user_id) VALUES
   ('ROLE_ADMIN', 100002),
   ('ROLE_ADMIN', 100003);
 
-INSERT INTO restaurants (user_id, name, address) VALUES
-  (100002, 'rest1', 'address1'),
-  (100002, 'rest2', 'address2'),
-  (100003, 'rest3', 'address3'),
-  (100003, 'rest4', 'address4');
+INSERT INTO restaurants (name, address) VALUES
+  ('rest1', 'address1'),
+  ('rest2', 'address2'),
+  ('rest3', 'address3'),
+  ('rest4', 'address4');
 
 INSERT INTO dishes (restaurant_id, name, price) VALUES
   (100004, 'dishes1', 550),
@@ -36,7 +36,7 @@ INSERT INTO dishes (restaurant_id, name, price) VALUES
   (100007, 'dishes1', 300),
   (100007, 'dishes2', 150);
 
-INSERT INTO history_voting (user_id, restaurant_id, DATETIME_VOTING) VALUES
+INSERT INTO history_voting (user_id, restaurant_id, date_time_voting) VALUES
   (100000, 100005, '2018-10-28 10:00:00'),
   (100001, 100006, '2018-10-28 10:02:00'),
   (100000, 100004, '2018-10-29 10:00:00'),

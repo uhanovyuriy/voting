@@ -2,21 +2,23 @@ package ru.myproject.voting.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
 @Table(name = "restaurants")
 public class Restaurant extends AbstractBaseEntity {
 
+    @Column(name = "name", nullable = false)
+    @NotBlank
+    @Size(min = 2, max = 50)
+    private String name;
+
     @Column(name = "address", nullable = false)
     @NotBlank
     private String address;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurant")
     private List<Dish> dishes;
 
     public Restaurant() {
@@ -24,8 +26,16 @@ public class Restaurant extends AbstractBaseEntity {
 
     public Restaurant(Integer id, String name, String address) {
         super.id = id;
-        super.name = name;
+        this.name = name;
         this.address = address;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAddress() {
@@ -34,14 +44,6 @@ public class Restaurant extends AbstractBaseEntity {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public List<Dish> getDishes() {

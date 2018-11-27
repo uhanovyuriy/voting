@@ -10,6 +10,11 @@ import java.util.*;
 @Table(name = "users")
 public class User extends AbstractBaseEntity {
 
+    @Column(name = "name", nullable = false)
+    @NotBlank
+    @Size(min = 2, max = 50)
+    private String name;
+
     @Column(name = "email", nullable = false, unique = true)
     @Email
     @NotBlank
@@ -44,7 +49,7 @@ public class User extends AbstractBaseEntity {
 
     public User(Integer id, String name, String email, String password, Date registered, boolean enabled, Collection<Role> roles) {
         super.id = id;
-        super.name = name;
+        this.name = name;
         this.email = email;
         this.password = password;
         this.registered = registered;
@@ -54,6 +59,14 @@ public class User extends AbstractBaseEntity {
 
     public User(Integer id, String name, String email, String password, Role role, Role... roles) {
         this(id, name, email, password, new Date(), true, EnumSet.of(role, roles));
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {

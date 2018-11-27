@@ -1,7 +1,5 @@
 package ru.myproject.voting.model;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -16,10 +14,6 @@ public abstract class AbstractBaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     protected Integer id;
 
-    @Column(name = "name", nullable = false)
-    @NotBlank
-    protected String name;
-
     protected AbstractBaseEntity() {
     }
 
@@ -31,14 +25,6 @@ public abstract class AbstractBaseEntity {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public boolean isNew() {
         return id == null;
     }
@@ -48,8 +34,7 @@ public abstract class AbstractBaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AbstractBaseEntity that = (AbstractBaseEntity) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(name, that.name);
+        return Objects.equals(id, that.id);
     }
 
     @Override
