@@ -6,16 +6,17 @@ DELETE FROM users;
 ALTER SEQUENCE global_seq RESTART WITH 100000;
 
 INSERT INTO users (name, email, password) VALUES
-  ('User1', 'user1@yandex.ru', 'password'),
-  ('User2', 'user2@yandex.ru', 'password'),
-  ('Admin1', 'admin1@gmail.com', 'admin'),
-  ('Admin2', 'admin2@gmail.com', 'admin');
+  ('User1', 'user1@yandex.ru', '$2a$10$3gFJhDDDpb0aXDGlBIqZPuIcOoGWOv398Kmbi4Lyz/DEaFDjmrqKC'),
+  ('User2', 'user2@yandex.ru', '$2a$10$3gFJhDDDpb0aXDGlBIqZPuIcOoGWOv398Kmbi4Lyz/DEaFDjmrqKC'),
+  ('Admin1', 'admin1@gmail.com', '$2a$10$gyIatFXjxzzNvMMmJAYtYOEWk5/Ie1PwCVr8m2hgc0laPX.Yq4U4m'),
+  ('Admin2', 'admin2@gmail.com', '$2a$10$gyIatFXjxzzNvMMmJAYtYOEWk5/Ie1PwCVr8m2hgc0laPX.Yq4U4m');
 
 INSERT INTO user_roles (role, user_id) VALUES
   ('ROLE_USER', 100000),
   ('ROLE_USER', 100001),
   ('ROLE_ADMIN', 100002),
-  ('ROLE_ADMIN', 100003);
+  ('ROLE_ADMIN', 100003),
+  ('ROLE_USER', 100003);
 
 INSERT INTO restaurants (name, address) VALUES
   ('rest1', 'address1'),
