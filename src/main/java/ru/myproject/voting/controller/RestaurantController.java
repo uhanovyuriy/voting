@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.myproject.voting.model.Dish;
 import ru.myproject.voting.model.Restaurant;
 import ru.myproject.voting.repository.RestaurantCrudRepository;
 import ru.myproject.voting.service.RestaurantService;
@@ -18,7 +19,7 @@ import static ru.myproject.voting.util.ValidationUtil.assureIdConsistent;
 import static ru.myproject.voting.util.ValidationUtil.checkNew;
 
 @RestController
-@RequestMapping(value = "voting/rest/admin/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "voting/rest/restaurants/", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestaurantController {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
@@ -36,7 +37,7 @@ public class RestaurantController {
     public ResponseEntity<Restaurant> create(@RequestBody Restaurant restaurant) {
         checkNew(restaurant);
         LOGGER.info("create {}", restaurant);
-        Restaurant created = repository.save(restaurant);
+        Restaurant created = service.create(restaurant);
 
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
@@ -44,7 +45,7 @@ public class RestaurantController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void update(@RequestBody Restaurant restaurant, @PathVariable("id") int id) {
-        assureIdConsistent(restaurant, id);
+//        assureIdConsistent(restaurant, id);
         LOGGER.info("update {}", restaurant);
         service.update(restaurant);
     }
@@ -53,18 +54,38 @@ public class RestaurantController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         LOGGER.info("delete {}", id);
-        repository.deleteById(id);
+        service.delete(id);
     }
 
     @GetMapping(value = "/{id}")
     public Restaurant get(@PathVariable int id) {
         LOGGER.info("get {}", id);
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("Restaurant not found"));
+        return service.get(id);
     }
 
     @GetMapping
     public List<Restaurant> getAll() {
         LOGGER.info("getAll");
         return repository.findAll();
+    }
+
+    @PostMapping(value = "/{id}/menu")
+    public List<Dish> createMenu(@RequestBody List<Dish> menu, @PathVariable("id") int restaurantId) {
+        LOGGER.info("create menu {} for restaurant {}", menu, restaurantId);
+        return service.createOrUpdateMenu(menu, restaurantId);
+    }
+
+    @PutMapping(value = "/{id}/menu")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void updateMenu(@RequestBody List<Dish> menu, @PathVariable("id") int restaurantId) {
+        LOGGER.info("update menu {} for restaurant {}", menu, restaurantId);
+        service.createOrUpdateMenu(menu, restaurantId);
+    }
+
+    @DeleteMapping(value = "/{id}/menu")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteMenu(@PathVariable("id") int restaurantId) {
+        LOGGER.info("delete menu for restaurant {}", restaurantId);
+        service.deleteMenu(restaurantId);
     }
 }

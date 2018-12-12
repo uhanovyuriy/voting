@@ -9,13 +9,15 @@ public interface RestaurantService {
 
     Restaurant create(Restaurant restaurant);
 
-    Restaurant update(Restaurant restaurant);
+    void update(Restaurant restaurant);
 
     void delete(int id);
 
-    Restaurant getWithDishes(int id);
+    Restaurant get(int id);
 
-    List<Restaurant> getAllWithDihes();
+    List<Restaurant> getAll();
 
-    List<Dish> updateMenu(int restaurantId);
+    List<Dish> createOrUpdateMenu(List<Dish> menu, int restaurantId);
+
+    void deleteMenu(int restaurantId);
 }
