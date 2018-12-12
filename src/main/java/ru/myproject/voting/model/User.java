@@ -3,6 +3,7 @@ package ru.myproject.voting.model;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.*;
 
@@ -27,11 +28,11 @@ public class User extends AbstractBaseEntity {
     private String password;
 
     @Column(name = "registered", nullable = false)
-    @NotBlank
+    @NotNull
     private Date registered;
 
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
-    @NotBlank
+    @NotNull
     private boolean enabled;
 
     @Enumerated(EnumType.STRING)

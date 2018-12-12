@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,21 +14,21 @@ import java.time.LocalDateTime;
 public class HistoryVoting extends AbstractBaseEntity{
 
     @Column(name = "date_time_voting", nullable = false)
-    @NotBlank
+    @NotNull
     private LocalDateTime dateTimeVoting;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @NotBlank
+    @NotNull
     private User user;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @NotBlank
+    @NotNull
     private Restaurant restaurant;
 
     public HistoryVoting() {
@@ -68,8 +69,8 @@ public class HistoryVoting extends AbstractBaseEntity{
     public String toString() {
         return "HistoryVoting{" +
                 "dateTimeVoting=" + dateTimeVoting +
-                ", userName=" + user.getName() +
-                ", restaurant_name=" + restaurant.getName() +
+                ", userId=" + user.getId() +
+                ", restaurantId=" + restaurant.getId() +
                 '}';
     }
 }

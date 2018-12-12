@@ -3,9 +3,11 @@ package ru.myproject.voting.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -18,14 +20,15 @@ public class Dish extends AbstractBaseEntity {
     private String name;
 
     @Column(name = "price", nullable = false)
-    @NotBlank
+    @NotNull
+    @Range(min = 1, max = 999999)
     private Integer price;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @NotBlank
+    @NotNull
     Restaurant restaurant;
 
     public Dish() {
@@ -66,7 +69,6 @@ public class Dish extends AbstractBaseEntity {
         return "Dish{" +
                 ", name='" + name + '\'' +
                 "price=" + price +
-                ", restaurant_name=" + restaurant.getName() +
                 '}';
     }
 }
