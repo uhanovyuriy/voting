@@ -3,9 +3,9 @@ package ru.myproject.voting.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.myproject.voting.model.HistoryVoting;
+import ru.myproject.voting.model.Restaurant;
 import ru.myproject.voting.repository.HistoryVotingCrudRepository;
 
-import java.util.List;
 
 @Service
 public class HistoryVotingServiceImpl implements HistoryVotingService {
@@ -18,17 +18,17 @@ public class HistoryVotingServiceImpl implements HistoryVotingService {
     }
 
     @Override
-    public HistoryVoting create(HistoryVoting voice) {
+    public HistoryVoting create(int userId, int restaurantId) {
         return null;
     }
 
     @Override
-    public HistoryVoting get(int id) {
-        return null;
+    public void update(int userId) {
+
     }
 
     @Override
-    public List<HistoryVoting> getAll() {
+    public Restaurant resultVotingToDay() {
         return null;
     }
 }
