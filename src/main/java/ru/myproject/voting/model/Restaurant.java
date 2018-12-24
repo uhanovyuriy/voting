@@ -18,7 +18,7 @@ public class Restaurant extends AbstractBaseEntity {
     @NotBlank
     private String address;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurant")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     private List<Dish> dishes;
 
     public Restaurant() {
