@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.myproject.voting.model.Dish;
 import ru.myproject.voting.model.Restaurant;
 
-
+@Transactional(readOnly = true)
 public interface DishCrudRepository extends JpaRepository<Dish, Integer> {
 
     @Transactional

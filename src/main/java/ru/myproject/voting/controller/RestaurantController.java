@@ -14,6 +14,7 @@ import ru.myproject.voting.service.RestaurantService;
 
 import java.util.List;
 
+import static ru.myproject.voting.util.ValidationUtil.assureIdConsistent;
 import static ru.myproject.voting.util.ValidationUtil.checkNew;
 
 @RestController
@@ -43,7 +44,7 @@ public class RestaurantController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void update(@RequestBody Restaurant restaurant, @PathVariable("id") int id) {
-//        assureIdConsistent(restaurant, id);
+        assureIdConsistent(restaurant, id);
         LOGGER.info("update {}", restaurant);
         service.update(restaurant);
     }

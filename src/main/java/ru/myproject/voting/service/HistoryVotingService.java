@@ -2,14 +2,20 @@ package ru.myproject.voting.service;
 
 import ru.myproject.voting.model.HistoryVoting;
 import ru.myproject.voting.model.Restaurant;
+import ru.myproject.voting.model.User;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface HistoryVotingService {
 
-    HistoryVoting create(int userId, int restaurantId);
+    HistoryVoting createOrUpdate(int userId, int restaurantId);
 
-    void update(int id);
+    void delete(int id);
 
-    Restaurant resultVotingToDay();
+    HistoryVoting get(int id);
+
+    List<HistoryVoting> getAll();
+
+//    List<Restaurant> resultVotingToDay(LocalDate date);
 }
