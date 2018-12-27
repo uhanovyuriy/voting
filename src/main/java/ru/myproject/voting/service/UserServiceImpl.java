@@ -1,13 +1,19 @@
 package ru.myproject.voting.service;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.myproject.voting.model.User;
 import ru.myproject.voting.repository.UserCrudRepository;
+import ru.myproject.voting.to.CustomUserDetails;
+import ru.myproject.voting.util.exception.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private UserCrudRepository repository;
 
@@ -38,5 +44,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAll() {
         return null;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<User> optional = repository.findUsersByEmail(email);
+        if (optional.isPresent()) {
+            return new CustomUserDetails(optional.get());
+        } else throw new NotFoundException("User by email not found in repository");
     }
 }
