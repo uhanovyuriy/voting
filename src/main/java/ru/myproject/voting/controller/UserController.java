@@ -12,7 +12,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping(value = "/voting/rest/users", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/voting/rest/admin/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
     private UserCrudRepository repository;
@@ -22,7 +22,7 @@ public class UserController {
         this.repository = repository;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<User> getAll() {
         return repository.findAll();
     }

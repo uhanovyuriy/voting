@@ -18,7 +18,7 @@ import static ru.myproject.voting.util.ValidationUtil.assureIdConsistent;
 import static ru.myproject.voting.util.ValidationUtil.checkNew;
 
 @RestController
-@RequestMapping(value = "voting/rest/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "voting/rest/admin/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestaurantController {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
@@ -32,7 +32,7 @@ public class RestaurantController {
         this.service = service;
     }
 
-    @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> create(@RequestBody Restaurant restaurant) {
         checkNew(restaurant);
         LOGGER.info("create {}", restaurant);
@@ -62,7 +62,7 @@ public class RestaurantController {
         return service.get(id);
     }
 
-    @GetMapping(value = "/")
+    @GetMapping
     public List<Restaurant> getAll() {
         LOGGER.info("getAll");
         return repository.findAll();

@@ -41,7 +41,7 @@ public class HistoryVotingController {
         return historyVotingService.get(id);
     }
 
-    @GetMapping(value = "/")
+    @GetMapping
     public List<HistoryVoting> getAll() {
         return historyVotingService.getAll();
     }
