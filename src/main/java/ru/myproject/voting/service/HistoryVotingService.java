@@ -2,9 +2,8 @@ package ru.myproject.voting.service;
 
 import ru.myproject.voting.model.HistoryVoting;
 import ru.myproject.voting.model.Restaurant;
-import ru.myproject.voting.model.User;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface HistoryVotingService {
@@ -17,5 +16,5 @@ public interface HistoryVotingService {
 
     List<HistoryVoting> getAll();
 
-//    List<Restaurant> resultVotingToDay(LocalDate date);
+    List<Restaurant> resultVotingToDay(LocalDateTime dateTime);
 }

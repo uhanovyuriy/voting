@@ -11,8 +11,6 @@ import ru.myproject.voting.repository.UserCrudRepository;
 import ru.myproject.voting.util.exception.IncorrectTimeVoting;
 import ru.myproject.voting.util.exception.NotFoundException;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -49,7 +47,7 @@ public class HistoryVotingServiceImpl implements HistoryVotingService {
         }
 
         Optional<HistoryVoting> optional = Optional.ofNullable(repository
-                .getHistoryVotingByUserIdAndDate(userId, LocalDateTime.of(currentDateTime.toLocalDate(), LocalTime.MIN)));
+                .getByUserIdAndDate(userId, LocalDateTime.of(currentDateTime.toLocalDate(), LocalTime.MIN)));
         if (!optional.isPresent()) {
             User user = userRepository.getOne(userId);
             Restaurant restaurant = restaurantRepository.getOne(restaurantId);
@@ -78,26 +76,29 @@ public class HistoryVotingServiceImpl implements HistoryVotingService {
         return repository.findAll();
     }
 
-    //    @Override
-//    public List<Restaurant> resultVotingToDay(LocalDate date) {
-//        AtomicLong maxVoices = new AtomicLong();
-//        List<Restaurant> listResult = new ArrayList<>();
-//        List<HistoryVoting> list = repository.getAllByDateTimeVoting_Date(date);
-//        list.stream()
-//                .collect(Collectors.groupingBy(HistoryVoting::getRestaurant, Collectors.counting()))
-//                .entrySet().stream()
-//                .sorted(Map.Entry.<Restaurant, Long>comparingByValue().reversed())
-//                .forEach(e -> {
-//                    if (listResult.isEmpty()) {
-//                        listResult.add(e.getKey());
-//                        maxVoices.set(e.getValue());
-//                    }
-//                    if (!listResult.isEmpty() && e.getValue() == maxVoices.get()) {
-//                        listResult.add(e.getKey());
-//                    }
-//                });
-//        return listResult;
-//    }
+    @Override
+    public List<Restaurant> resultVotingToDay(LocalDateTime dateTime) {
+        AtomicLong maxVoices = new AtomicLong();
+        List<Restaurant> listResult = new ArrayList<>();
+        List<HistoryVoting> list = repository.getAllToCurrentDay(LocalDateTime.of(dateTime.toLocalDate(), LocalTime.MIN));
+        list.stream()
+                .collect(Collectors.groupingBy(HistoryVoting::getRestaurant, Collectors.counting()))
+                .entrySet().stream()
+                .sorted(Map.Entry.<Restaurant, Long>comparingByValue().reversed())
+                .forEach(e -> {
+                    if (listResult.isEmpty()) {
+                        Restaurant top = new Restaurant(e.getKey());
+                        listResult.add(top);
+                        maxVoices.set(e.getValue());
+                    } else {
+                        if (e.getValue() == maxVoices.get()) {
+                            Restaurant top = new Restaurant(e.getKey());
+                            listResult.add(top);
+                        }
+                    }
+                });
+        return listResult;
+    }
 
     private boolean isCorrectTime(LocalDateTime ldt) {
         LocalTime startTime = LocalTime.MIN;
