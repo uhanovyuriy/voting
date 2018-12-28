@@ -13,7 +13,7 @@ import java.util.List;
 public interface HistoryVotingCrudRepository extends JpaRepository<HistoryVoting, Integer> {
 
     @Query("SELECT h FROM HistoryVoting h WHERE h.user.id=:userId AND h.dateTimeVoting>:dateTime")
-    HistoryVoting getByUserIdAndDate(@Param("userId") int userId, @Param("dateTime")LocalDateTime dateTime);
+    HistoryVoting getByUserIdAndDate(@Param("userId") int userId, @Param("dateTime") LocalDateTime dateTime);
 
     @Query("SELECT h FROM HistoryVoting h WHERE h.dateTimeVoting>:dateTime")
     List<HistoryVoting> getAllToCurrentDay(@Param("dateTime") LocalDateTime dateTime);

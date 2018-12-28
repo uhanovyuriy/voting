@@ -13,12 +13,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "voting/rest/voting", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = HistoryVotingController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class HistoryVotingController {
 
-    private HistoryVotingService historyVotingService;
+    final static String REST_URL = "voting/rest/users/voting";
 
-    private RestaurantService restaurantService;
+    private final HistoryVotingService historyVotingService;
+
+    private final RestaurantService restaurantService;
 
     @Autowired
     public HistoryVotingController(HistoryVotingService historyVotingService, RestaurantService restaurantService) {
@@ -26,7 +28,7 @@ public class HistoryVotingController {
         this.restaurantService = restaurantService;
     }
 
-    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public HistoryVoting create(@RequestParam("userId") int userId, @RequestParam("restaurantId") int restaurantId) {
         return historyVotingService.createOrUpdate(userId, restaurantId);
     }
@@ -46,7 +48,7 @@ public class HistoryVotingController {
         return historyVotingService.getAll();
     }
 
-    @GetMapping(value = "/result", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/result")
     public List<Restaurant> resultVotingToDay(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @RequestParam LocalDateTime dateTime) {
         return historyVotingService.resultVotingToDay(dateTime);
     }

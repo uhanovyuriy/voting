@@ -2,8 +2,6 @@ package ru.myproject.voting.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ru.myproject.voting.model.AbstractBaseEntity;
 import ru.myproject.voting.model.Dish;
 import ru.myproject.voting.model.Restaurant;
 import ru.myproject.voting.repository.DishCrudRepository;
@@ -15,9 +13,9 @@ import java.util.List;
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
 
-    private DishCrudRepository dishRepository;
+    private final DishCrudRepository dishRepository;
 
-    private RestaurantCrudRepository restaurantRepository;
+    private final RestaurantCrudRepository restaurantRepository;
 
     @Autowired
     public RestaurantServiceImpl(DishCrudRepository dishRepository, RestaurantCrudRepository restaurantRepository) {

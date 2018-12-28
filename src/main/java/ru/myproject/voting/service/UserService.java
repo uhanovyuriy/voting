@@ -8,11 +8,13 @@ public interface UserService {
 
     User create(User user);
 
-    User update(User user);
+    void update(User user, int id);
 
     void delete(int id);
 
     User get(int id);
 
     List<User> getAll();
+
+    User getByEmail(String email);
 }

@@ -13,9 +13,10 @@ import ru.myproject.voting.service.UserServiceImpl;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private static final String URL_REST = "/voting/rest/";
 
-    private UserServiceImpl userService;
+    private static final String URL_REST = "/voting/rest/users";
+
+    private final UserServiceImpl userService;
 
     @Autowired
     public SecurityConfiguration(UserServiceImpl userService) {
@@ -38,10 +39,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(URL_REST + "admin/**").hasRole("ADMIN")
-                .antMatchers(URL_REST + "register/").anonymous()
-                .antMatchers(URL_REST + "voting/**").hasRole("USER")
-                .anyRequest().authenticated()
+                .antMatchers(URL_REST + "/voting/**").hasRole("USER")
+                .antMatchers(URL_REST + "/**").hasRole("ADMIN")
                 .and()
                 .httpBasic();
     }

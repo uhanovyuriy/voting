@@ -25,11 +25,13 @@ import java.util.stream.Collectors;
 @Service
 public class HistoryVotingServiceImpl implements HistoryVotingService {
 
-    private HistoryVotingCrudRepository repository;
+    private static final LocalTime TIME_END_VOTING = LocalTime.of(11, 0);
 
-    private RestaurantCrudRepository restaurantRepository;
+    private final HistoryVotingCrudRepository repository;
 
-    private UserCrudRepository userRepository;
+    private final RestaurantCrudRepository restaurantRepository;
+
+    private final UserCrudRepository userRepository;
 
     @Autowired
     public HistoryVotingServiceImpl(HistoryVotingCrudRepository repository, RestaurantCrudRepository restaurantRepository,
@@ -102,7 +104,6 @@ public class HistoryVotingServiceImpl implements HistoryVotingService {
 
     private boolean isCorrectTime(LocalDateTime ldt) {
         LocalTime startTime = LocalTime.MIN;
-        LocalTime endTime = LocalTime.of(18, 0);
-        return ldt.toLocalTime().isAfter(startTime) && ldt.toLocalTime().isBefore(endTime);
+        return ldt.toLocalTime().isAfter(startTime) && ldt.toLocalTime().isBefore(TIME_END_VOTING);
     }
 }
