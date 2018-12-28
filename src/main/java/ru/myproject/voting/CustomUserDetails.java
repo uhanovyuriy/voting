@@ -1,4 +1,4 @@
-package ru.myproject.voting.to;
+package ru.myproject.voting;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
