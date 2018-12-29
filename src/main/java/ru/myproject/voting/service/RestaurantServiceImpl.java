@@ -2,6 +2,7 @@ package ru.myproject.voting.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.myproject.voting.model.Dish;
 import ru.myproject.voting.model.Restaurant;
 import ru.myproject.voting.repository.DishCrudRepository;
@@ -15,49 +16,48 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     private final DishCrudRepository dishRepository;
 
-    private final RestaurantCrudRepository restaurantRepository;
+    private final RestaurantCrudRepository repository;
 
     @Autowired
-    public RestaurantServiceImpl(DishCrudRepository dishRepository, RestaurantCrudRepository restaurantRepository) {
+    public RestaurantServiceImpl(DishCrudRepository dishRepository, RestaurantCrudRepository repository) {
         this.dishRepository = dishRepository;
-        this.restaurantRepository = restaurantRepository;
+        this.repository = repository;
     }
 
+    @Transactional
     @Override
-    public Restaurant create(Restaurant restaurant) {
-        return restaurantRepository.save(restaurant);
+    public Restaurant createOrUpdate(Restaurant restaurant) {
+        return repository.save(restaurant);
     }
 
-    @Override
-    public void update(Restaurant restaurant) {
-        restaurantRepository.save(restaurant);
-    }
-
+    @Transactional
     @Override
     public void delete(int id) {
-        restaurantRepository.deleteById(id);
+        repository.deleteById(id);
     }
 
     @Override
     public Restaurant get(int id) {
-        return restaurantRepository.findById(id).orElseThrow(() -> new NotFoundException("Restaurant not found"));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("Restaurant not found"));
     }
 
     @Override
     public List<Restaurant> getAll() {
-        return restaurantRepository.findAll();
+        return repository.findAll();
     }
 
+    @Transactional
     @Override
     public List<Dish> createOrUpdateMenu(List<Dish> menu, int restaurantId) {
-        Restaurant r = restaurantRepository.getOne(restaurantId);
+        Restaurant r = repository.getOne(restaurantId);
         menu.forEach(dish -> dish.setRestaurant(r));
         return dishRepository.saveAll(menu);
     }
 
+    @Transactional
     @Override
     public void deleteMenu(int restaurantId) {
-        Restaurant r = restaurantRepository.getOne(restaurantId);
+        Restaurant r = repository.getOne(restaurantId);
         dishRepository.deleteAllByRestaurant(r);
     }
 }

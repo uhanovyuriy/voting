@@ -2,6 +2,7 @@ package ru.myproject.voting.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.myproject.voting.model.HistoryVoting;
 import ru.myproject.voting.model.Restaurant;
 import ru.myproject.voting.model.User;
@@ -41,6 +42,7 @@ public class HistoryVotingServiceImpl implements HistoryVotingService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     @Override
     public HistoryVoting createOrUpdate(int userId, int restaurantId) {
         LocalDateTime currentDateTime = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
@@ -63,6 +65,7 @@ public class HistoryVotingServiceImpl implements HistoryVotingService {
         }
     }
 
+    @Transactional
     @Override
     public void delete(int id) {
         repository.deleteById(id);

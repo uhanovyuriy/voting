@@ -35,7 +35,7 @@ public class RestaurantController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> create(@Valid @RequestBody Restaurant restaurant) {
         checkNew(restaurant);
-        Restaurant created = service.create(restaurant);
+        Restaurant created = service.createOrUpdate(restaurant);
 
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
@@ -44,7 +44,7 @@ public class RestaurantController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable("id") int id) {
         assureIdConsistent(restaurant, id);
-        service.update(restaurant);
+        service.createOrUpdate(restaurant);
     }
 
     @DeleteMapping(value = "/{id}")

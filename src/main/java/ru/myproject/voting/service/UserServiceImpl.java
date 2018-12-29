@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.myproject.voting.model.User;
 import ru.myproject.voting.repository.UserCrudRepository;
@@ -30,18 +31,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
+    @Transactional
     @Override
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
         return repository.save(prepareToSave(user, passwordEncoder));
     }
 
+    @Transactional
     @Override
     public void update(User user, int id) {
         Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(repository.save(prepareToSave(user, passwordEncoder)), id);
     }
 
+    @Transactional
     @Override
     public void delete(int id) {
         checkNotFoundWithId(repository.delete(id), id);

@@ -7,9 +7,7 @@ import java.util.List;
 
 public interface RestaurantService {
 
-    Restaurant create(Restaurant restaurant);
-
-    void update(Restaurant restaurant);
+    Restaurant createOrUpdate(Restaurant restaurant);
 
     void delete(int id);
 
