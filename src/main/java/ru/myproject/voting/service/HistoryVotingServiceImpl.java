@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @Service
 public class HistoryVotingServiceImpl implements HistoryVotingService {
 
-    private static final LocalTime TIME_END_VOTING = LocalTime.of(11, 0);
+    private static final LocalTime TIME_END_VOTING = LocalTime.of(20, 0);
 
     private final HistoryVotingCrudRepository repository;
 

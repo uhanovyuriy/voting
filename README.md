@@ -30,5 +30,5 @@
 #### get All HistoryVoting
 'curl -s http://localhost:8080/voting/rest/users/voting --user user1@yandex.ru:password'
 
-#### create HistoryVoting
-
+#### get result voting today
+curl -c -X GET http://localhost:8080/voting/rest/users/voting/result?dateTime=2018-10-31T15:45:25 --user admin2@gmail.com:admin
