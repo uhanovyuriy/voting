@@ -33,10 +33,9 @@ public class HistoryVotingController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<HistoryVoting> create(@AuthenticationPrincipal User user, @RequestParam("restaurantId") int restaurantId) {
-        HistoryVoting created = service.createOrUpdate(user.getId(), restaurantId);
-
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void create(@AuthenticationPrincipal User user, @RequestParam("restaurantId") int restaurantId) {
+        service.createOrUpdate(user.getId(), restaurantId);
     }
 
     @DeleteMapping(value = "/{id}")

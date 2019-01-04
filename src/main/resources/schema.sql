@@ -42,6 +42,8 @@ CREATE TABLE restaurants
   name    VARCHAR(255) NOT NULL,
   address VARCHAR(255) NOT NULL
 );
+CREATE UNIQUE INDEX restaurants_unique_name_idx
+  ON restaurants (name);
 
 CREATE TABLE dishes
 (

@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @Service
 public class HistoryVotingServiceImpl implements HistoryVotingService {
 
-    private static final LocalTime TIME_END_VOTING = LocalTime.of(20, 0);
+    private static final LocalTime TIME_END_VOTING = LocalTime.of(11, 0);
 
     private final HistoryVotingCrudRepository repository;
 
@@ -73,7 +73,7 @@ public class HistoryVotingServiceImpl implements HistoryVotingService {
 
     @Override
     public HistoryVoting get(int id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("Voting not found"));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("Voting " + id + " not found"));
     }
 
     @Override

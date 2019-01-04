@@ -7,7 +7,7 @@
 `curl -s http://localhost:8080/voting/rest/users/100001 --user admin1@gmail.com:admin`
 
 #### create User
-'curl -s -X POST -d '{"name":"newUser","email":"newEmail@yandex.ru","password":"newpassword","registered":"2018-12-28T10:15:00","roles":["ROLE_USER"]}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/voting/rest/users/register --user admin1@gmail.com:admin'
+'curl -s -X POST -d '{"name":"newUser","email":"newEmail@yandex.ru","password":"newpassword","registered":"2018-12-28T10:15:00","roles":["ROLE_USER"]}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/voting/rest/users --user admin1@gmail.com:admin'
 
 #### get All Restaurants
 `curl -s http://localhost:8080/voting/rest/users/restaurants --user admin1@gmail.com:admin`

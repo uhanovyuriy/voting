@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     public UserServiceImpl(UserCrudRepository repository) {
-        this .repository = repository;
+        this.repository = repository;
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
