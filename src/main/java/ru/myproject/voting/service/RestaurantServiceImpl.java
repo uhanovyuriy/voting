@@ -1,6 +1,9 @@
 package ru.myproject.voting.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.myproject.voting.model.Dish;
@@ -12,6 +15,7 @@ import ru.myproject.voting.util.exception.NotFoundException;
 import java.util.List;
 
 @Service
+@CacheConfig(cacheNames = {"restaurants"})
 public class RestaurantServiceImpl implements RestaurantService {
 
     private final DishCrudRepository dishRepository;
@@ -26,12 +30,14 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Transactional
     @Override
+    @CacheEvict(allEntries = true)
     public Restaurant createOrUpdate(Restaurant restaurant) {
         return repository.save(restaurant);
     }
 
     @Transactional
     @Override
+    @CacheEvict(allEntries = true)
     public void delete(int id) {
         repository.deleteById(id);
     }
@@ -42,12 +48,14 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    @Cacheable
     public List<Restaurant> getAll() {
         return repository.findAll();
     }
 
     @Transactional
     @Override
+    @CacheEvict(allEntries = true)
     public List<Dish> createOrUpdateMenu(List<Dish> menu, int restaurantId) {
         Restaurant r = repository.getOne(restaurantId);
         menu.forEach(dish -> dish.setRestaurant(r));
@@ -56,6 +64,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Transactional
     @Override
+    @CacheEvict(allEntries = true)
     public void deleteMenu(int restaurantId) {
         Restaurant r = repository.getOne(restaurantId);
         dishRepository.deleteAllByRestaurant(r);

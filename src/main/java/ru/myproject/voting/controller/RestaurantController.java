@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.myproject.voting.model.Dish;
 import ru.myproject.voting.model.Restaurant;
-import ru.myproject.voting.repository.RestaurantCrudRepository;
 import ru.myproject.voting.service.RestaurantService;
 
 import javax.validation.Valid;
@@ -22,13 +21,10 @@ public class RestaurantController {
 
     final static String REST_URL = "voting/rest/users/restaurants";
 
-    private final RestaurantCrudRepository repository;
-
     private RestaurantService service;
 
     @Autowired
-    public RestaurantController(RestaurantCrudRepository repository, RestaurantService service) {
-        this.repository = repository;
+    public RestaurantController(RestaurantService service) {
         this.service = service;
     }
 
@@ -60,7 +56,7 @@ public class RestaurantController {
 
     @GetMapping
     public List<Restaurant> getAll() {
-        return repository.findAll();
+        return service.getAll();
     }
 
     @PostMapping(value = "/{id}/menu", consumes = MediaType.APPLICATION_JSON_VALUE)
