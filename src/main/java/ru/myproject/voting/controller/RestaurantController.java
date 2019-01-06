@@ -19,7 +19,7 @@ import static ru.myproject.voting.util.ValidationUtil.checkNew;
 @RequestMapping(value = RestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestaurantController {
 
-    final static String REST_URL = "voting/rest/users/restaurants";
+    public final static String REST_URL = "voting/rest/users/restaurants";
 
     private RestaurantService service;
 
