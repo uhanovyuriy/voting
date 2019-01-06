@@ -6,6 +6,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import ru.myproject.voting.model.Dish;
 import ru.myproject.voting.model.Restaurant;
 import ru.myproject.voting.repository.DishCrudRepository;
@@ -32,6 +33,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     @CacheEvict(allEntries = true)
     public Restaurant createOrUpdate(Restaurant restaurant) {
+        Assert.notNull(restaurant, "restaurant must not be null");
         return repository.save(restaurant);
     }
 

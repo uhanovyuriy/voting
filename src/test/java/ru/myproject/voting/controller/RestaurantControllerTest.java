@@ -13,13 +13,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.myproject.voting.model.Restaurant;
 import ru.myproject.voting.service.RestaurantServiceImpl;
 import ru.myproject.voting.service.UserServiceImpl;
-import ru.myproject.voting.util.MessageUtil;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static testdata.TestDataRestaurant.RESTAURANT1;
 import static testdata.TestDataRestaurant.REST_URL;
 import static testdata.TestDataRestaurant.createNew;
 
@@ -38,9 +36,6 @@ public class RestaurantControllerTest {
 
     @MockBean
     UserServiceImpl userService;
-
-    @MockBean
-    MessageUtil messageUtil;
 
     @Test
     @WithMockUser(value = "admin", roles = "ADMIN")

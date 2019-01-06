@@ -2,18 +2,17 @@ package ru.myproject.voting.util.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.myproject.voting.util.MessageUtil;
 import ru.myproject.voting.util.ValidationUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,10 +38,7 @@ public class ExceptionInfoHandler {
                 }
             });
 
-    @Autowired
-    MessageUtil messageUtil;
-
-    @ResponseStatus(value = HttpStatus.CONFLICT)  // 409
+    @ResponseStatus(value = HttpStatus.CONFLICT)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ErrorInfo conflict(HttpServletRequest req, DataIntegrityViolationException e) {
         String rootMsg = ValidationUtil.getRootCause(e).getMessage();
@@ -52,7 +48,7 @@ public class ExceptionInfoHandler {
                     .filter(it -> lowerCaseMsg.contains(it.getKey()))
                     .findAny();
             if (entry.isPresent()) {
-                return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, messageUtil.getMessage(entry.get().getValue()));
+                return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, entry.get().getValue());
             }
         }
         return logAndGetErrorInfo(req, e, true, DATA_ERROR);
@@ -63,10 +59,16 @@ public class ExceptionInfoHandler {
     public ErrorInfo notValidArgument(HttpServletRequest req, Exception e) {
         BindingResult result = ((MethodArgumentNotValidException) e).getBindingResult();
         String[] details = result.getFieldErrors().stream()
-                .map(fe -> messageUtil.getMessage(fe))
+                .map(FieldError::getField)
                 .toArray(String[]::new);
 
         return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, details);
+    }
+
+    @ResponseStatus(HttpStatus.PRECONDITION_FAILED)
+    @ExceptionHandler(IncorrectTimeVoting.class)
+    public ErrorInfo endTimeVoting(HttpServletRequest req, Exception e) {
+        return logAndGetErrorInfo(req, e, true, INCORRECT_TIME_VOTING);
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
