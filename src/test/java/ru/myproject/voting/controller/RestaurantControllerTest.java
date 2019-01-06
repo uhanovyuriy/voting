@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static testdata.TestDataRestaurant.RESTAURANT1;
 import static testdata.TestDataRestaurant.REST_URL;
+import static testdata.TestDataRestaurant.createNew;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(RestaurantController.class)
@@ -44,7 +45,7 @@ public class RestaurantControllerTest {
     @Test
     @WithMockUser(value = "admin", roles = "ADMIN")
     public void testCreate() throws Exception {
-        Restaurant create = new Restaurant(RESTAURANT1);
+        Restaurant create = createNew;
         mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(create)))
