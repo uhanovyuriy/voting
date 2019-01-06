@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
 @Entity
 @Table(name = "dishes")
@@ -34,10 +35,11 @@ public class Dish extends AbstractBaseEntity {
     public Dish() {
     }
 
-    public Dish(Integer id, String name, Integer price) {
+    public Dish(Integer id, String name, Integer price, Restaurant restaurant) {
         super.id = id;
         this.name = name;
         this.price = price;
+        this.restaurant = restaurant;
     }
 
     public String getName() {
@@ -70,5 +72,21 @@ public class Dish extends AbstractBaseEntity {
                 ", name='" + name + '\'' +
                 "price=" + price +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Dish dish = (Dish) o;
+        return Objects.equals(id, dish.id) &&
+                Objects.equals(name, dish.name) &&
+                Objects.equals(price, dish.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), name, price);
     }
 }
