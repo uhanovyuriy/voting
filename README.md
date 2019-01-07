@@ -1,4 +1,16 @@
-#Curl command
+##REST API по принятию решения где пообедать, на основе голосования.
+
+API  построено на  **Spring-Boot** (security, web, data-jpa, cache, security-test, test), для тестирования приложения используется **HSQLDB** (in memory). 
+
+URI для доступа к ресурсам:
+
+- voting/rest/users — работа с пользователями(ADMIN);
+- voting/rest/users/restaurants — работа с ресторанами(ADMIN);
+- voting/rest/users/voting — голосование(ADMIN, USER);
+- voting/rest/users/voting/result — результат голосования(ADMIN, USER);
+
+
+Несколько команд для приложения в CURL:
 
 #### get All Users
 `curl -s http://localhost:8080/voting/rest/users --user admin1@gmail.com:admin`
@@ -7,7 +19,7 @@
 `curl -s http://localhost:8080/voting/rest/users/100001 --user admin1@gmail.com:admin`
 
 #### create User
-'curl -s -X POST -d '{"name":"newUser","email":"newEmail@yandex.ru","password":"newpassword","registered":"2018-12-28T10:15:00","roles":["ROLE_USER"]}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/voting/rest/users --user admin1@gmail.com:admin'
+`curl -s -X POST -d '{"name":"newUser","email":"newEmail@yandex.ru","password":"newpassword","registered":"2018-12-28T10:15:00","roles":["ROLE_USER"]}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/voting/rest/users --user admin1@gmail.com:admin`
 
 #### get All Restaurants
 `curl -s http://localhost:8080/voting/rest/users/restaurants --user admin1@gmail.com:admin`
@@ -28,10 +40,10 @@
 `curl -s -X PUT -d '{"name":"UpdateRestaurant","address":"UpdateAddress"}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/voting/rest/users/restaurants/100005 --user admin1@gmail.com:admin`
 
 #### get All HistoryVoting
-'curl -s http://localhost:8080/voting/rest/users/voting --user user1@yandex.ru:password'
+`curl -s http://localhost:8080/voting/rest/users/voting --user user1@yandex.ru:password`
 
 #### create voice
-'curl -s -X POST -d'{}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/voting/rest/users/voting?restaurantId=100005 --user user1@yandex.ru:password'
+`curl -s -X POST -d'{}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/voting/rest/users/voting?restaurantId=100005 --user user1@yandex.ru:password`
 
 #### get result voting today
-'curl -c -X GET http://localhost:8080/voting/rest/users/voting/result?dateTime=2018-10-31T15:45:25 --user admin2@gmail.com:admin'
+`curl -c -X GET http://localhost:8080/voting/rest/users/voting/result?dateTime=2018-10-31T15:45:25 --user admin2@gmail.com:admin`
