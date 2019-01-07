@@ -1,5 +1,7 @@
 ## REST API по принятию решения где пообедать, на основе голосования.
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9ccd9b34efc44c2880db824aa5038e40)](https://app.codacy.com/app/YorikUh/voting?utm_source=github.com&utm_medium=referral&utm_content=uhanovyuriy/voting&utm_campaign=Badge_Grade_Dashboard)
+
 API  построено на  **Spring-Boot** (security, web, data-jpa, cache, security-test, test), для тестирования приложения используется **HSQLDB** (in memory). 
 
 URI для доступа к ресурсам:
