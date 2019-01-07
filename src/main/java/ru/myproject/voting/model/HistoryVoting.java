@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "history_voting")
-public class HistoryVoting extends AbstractBaseEntity{
+public class HistoryVoting extends AbstractBaseEntity {
 
     @Column(name = "date_time_voting", nullable = false)
     @NotNull

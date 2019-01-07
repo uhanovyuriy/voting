@@ -1,13 +1,15 @@
-## REST API по принятию решения где пообедать, на основе голосования.
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/33debddccd5242c49ceaf51c86d71467)](https://www.codacy.com/app/YorikUh/voting?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=uhanovyuriy/voting&amp;utm_campaign=Badge_Grade)
+
+## REST API по принятию решения где пообедать, на основе голосования
 
 API  построено на  **Spring-Boot** (security, web, data-jpa, cache, security-test, test), для тестирования приложения используется **HSQLDB** (in memory). 
 
 URI для доступа к ресурсам:
 
-- voting/rest/users — работа с пользователями(ADMIN);
-- voting/rest/users/restaurants — работа с ресторанами(ADMIN);
-- voting/rest/users/voting — голосование(ADMIN, USER);
-- voting/rest/users/voting/result — результат голосования(ADMIN, USER);
+ - voting/rest/users — работа с пользователями (ADMIN);
+ - voting/rest/users/restaurants — работа с ресторанами (ADMIN);
+ - voting/rest/users/voting — голосование (ADMIN, USER);
+ - voting/rest/users/voting/result — результат голосования (ADMIN, USER);
 
 
 Несколько команд для приложения в CURL:

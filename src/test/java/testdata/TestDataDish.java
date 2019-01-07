@@ -23,14 +23,6 @@ public class TestDataDish {
     public static final List<Dish> menuNew = Arrays.asList(new Dish(null, "dishNew1", 100, RESTAURANT1),
             new Dish(null, "dishNew2", 200, RESTAURANT1));
 
-    public static void assertMatch(Dish actual, Dish expected) {
-        assertThat(actual).isEqualTo(expected);
-    }
-
-    public static void assertMatch(Iterable<Dish> actual, Dish... expected) {
-        assertMatch(actual, Arrays.asList(expected));
-    }
-
     public static void assertMatch(Iterable<Dish> actual, Iterable<Dish> expected) {
         assertThat(actual).isEqualTo(expected);
     }

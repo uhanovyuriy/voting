@@ -10,7 +10,6 @@ import ru.myproject.voting.model.Restaurant;
 import testdata.TestDataDish;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static testdata.TestDataDish.menu;
@@ -22,7 +21,7 @@ import static testdata.TestDataRestaurant.*;
 public class RestaurantServiceImplTest {
 
     @Autowired
-    RestaurantService service;
+    private RestaurantService service;
 
     @Test
     public void testCreate() {

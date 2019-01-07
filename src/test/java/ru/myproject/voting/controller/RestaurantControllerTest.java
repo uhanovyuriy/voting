@@ -29,7 +29,7 @@ public class RestaurantControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @MockBean
     RestaurantServiceImpl service;

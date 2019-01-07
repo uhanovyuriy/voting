@@ -51,7 +51,8 @@ CREATE TABLE dishes
   restaurant_id INTEGER      NOT NULL,
   name          VARCHAR(255) NOT NULL,
   price         INTEGER      NOT NULL,
-  FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE
+  FOREIGN KEY (restaurant_id) REFERENCES restaurants (id)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE history_voting
@@ -60,6 +61,8 @@ CREATE TABLE history_voting
   user_id          INTEGER   NOT NULL,
   restaurant_id    INTEGER   NOT NULL,
   date_time_voting TIMESTAMP NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-  FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES users (id)
+    ON DELETE CASCADE,
+  FOREIGN KEY (restaurant_id) REFERENCES restaurants (id)
+    ON DELETE CASCADE
 );
