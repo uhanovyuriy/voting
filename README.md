@@ -1,11 +1,15 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/33debddccd5242c49ceaf51c86d71467)](https://www.codacy.com/app/YorikUh/voting?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=uhanovyuriy/voting&amp;utm_campaign=Badge_Grade)
 
-## REST API по принятию решения где пообедать, на основе голосования
+## REST API по принятию решения где пообедать на текущий день, на основе голосования
 
 API  построено на  **Spring-Boot** (security, web, data-jpa, cache, security-test, test), для тестирования приложения используется **HSQLDB** (in memory). 
 
+В приложении имеется ограничение голосования по времени, выставляется в properties, 
+до етого времени пользователь может передумать и проголосовать заново.
+
 URI для доступа к ресурсам:
 
+ - voting/rest/users/register - регистрация пользователей (PermitAll)
  - voting/rest/users — работа с пользователями (ADMIN);
  - voting/rest/users/restaurants — работа с ресторанами (ADMIN);
  - voting/rest/users/voting — голосование (ADMIN, USER);
@@ -21,7 +25,7 @@ URI для доступа к ресурсам:
 `curl -s http://localhost:8080/voting/rest/users/100001 --user admin1@gmail.com:admin`
 
 #### create User
-`curl -s -X POST -d '{"name":"newUser","email":"newEmail@yandex.ru","password":"newpassword","registered":"2018-12-28T10:15:00","roles":["ROLE_USER"]}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/voting/rest/users --user admin1@gmail.com:admin`
+`curl -s -X POST -d '{"name":"newUser","email":"newEmail@yandex.ru","password":"newpassword","registered":"2018-12-28T10:15:00","roles":["ROLE_USER"]}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/voting/rest/users/register --user admin1@gmail.com:admin`
 
 #### get All Restaurants
 `curl -s http://localhost:8080/voting/rest/users/restaurants --user admin1@gmail.com:admin`

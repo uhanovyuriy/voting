@@ -1,6 +1,7 @@
 package ru.myproject.voting.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.myproject.voting.model.HistoryVoting;
@@ -26,7 +27,8 @@ import java.util.stream.Collectors;
 @Service
 public class HistoryVotingServiceImpl implements HistoryVotingService {
 
-    private static final LocalTime TIME_END_VOTING = LocalTime.of(11, 0);
+    @Value("${time.end.voting}")
+    private LocalTime timeEndVoting;
 
     private final HistoryVotingCrudRepository repository;
 
@@ -107,6 +109,6 @@ public class HistoryVotingServiceImpl implements HistoryVotingService {
 
     private boolean isCorrectTime(LocalDateTime ldt) {
         LocalTime startTime = LocalTime.MIN;
-        return ldt.toLocalTime().isAfter(startTime) && ldt.toLocalTime().isBefore(TIME_END_VOTING);
+        return ldt.toLocalTime().isAfter(startTime) && ldt.toLocalTime().isBefore(timeEndVoting);
     }
 }
