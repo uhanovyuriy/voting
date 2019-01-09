@@ -45,6 +45,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    @Cacheable
     public Restaurant get(int id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Restaurant " + id + " not found"));
     }
@@ -59,6 +60,8 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     @CacheEvict(allEntries = true)
     public List<Dish> createOrUpdateMenu(List<Dish> menu, int restaurantId) {
+        Assert.notNull(menu, "menu must not be null");
+
         Restaurant r = repository.getOne(restaurantId);
         menu.forEach(dish -> dish.setRestaurant(r));
         return dishRepository.saveAll(menu);

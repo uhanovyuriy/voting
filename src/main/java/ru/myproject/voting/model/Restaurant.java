@@ -75,8 +75,7 @@ public class Restaurant extends AbstractBaseEntity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Restaurant that = (Restaurant) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(name, that.name) &&
+        return Objects.equals(name, that.name) &&
                 Objects.equals(address, that.address);
     }
 

@@ -1,6 +1,7 @@
 package ru.myproject.voting.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,4 +18,9 @@ public interface HistoryVotingCrudRepository extends JpaRepository<HistoryVoting
 
     @Query("SELECT h FROM HistoryVoting h WHERE h.dateTimeVoting>:dateTime")
     List<HistoryVoting> getAllToCurrentDay(@Param("dateTime") LocalDateTime dateTime);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM HistoryVoting h WHERE h.id=:id")
+    int deleteById(@Param("id") int id);
 }

@@ -1,12 +1,12 @@
 package ru.myproject.voting.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import ru.myproject.voting.model.HistoryVoting;
 import ru.myproject.voting.model.Restaurant;
 import ru.myproject.voting.model.User;
 import ru.myproject.voting.service.HistoryVotingService;
@@ -32,24 +32,9 @@ public class HistoryVotingController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @ResponseStatus(value = HttpStatus.CREATED)
     public void create(@AuthenticationPrincipal User user, @RequestParam("restaurantId") int restaurantId) {
-        service.createOrUpdate(user.getId(), restaurantId);
-    }
-
-    @DeleteMapping(value = "/{id}")
-    public void delete(@PathVariable("id") int id) {
-        service.delete(id);
-    }
-
-    @GetMapping(value = "/{id}")
-    public HistoryVoting get(@PathVariable("id") int id) {
-        return service.get(id);
-    }
-
-    @GetMapping
-    public List<HistoryVoting> getAll() {
-        return service.getAll();
+        service.createOrUpdate(user, restaurantId);
     }
 
     @GetMapping(value = "/result")

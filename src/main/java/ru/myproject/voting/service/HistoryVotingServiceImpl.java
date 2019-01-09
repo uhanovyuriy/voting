@@ -4,14 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import ru.myproject.voting.model.HistoryVoting;
 import ru.myproject.voting.model.Restaurant;
 import ru.myproject.voting.model.User;
 import ru.myproject.voting.repository.HistoryVotingCrudRepository;
 import ru.myproject.voting.repository.RestaurantCrudRepository;
-import ru.myproject.voting.repository.UserCrudRepository;
 import ru.myproject.voting.util.exception.IncorrectTimeVoting;
-import ru.myproject.voting.util.exception.NotFoundException;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -34,28 +33,25 @@ public class HistoryVotingServiceImpl implements HistoryVotingService {
 
     private final RestaurantCrudRepository restaurantRepository;
 
-    private final UserCrudRepository userRepository;
-
     @Autowired
-    public HistoryVotingServiceImpl(HistoryVotingCrudRepository repository, RestaurantCrudRepository restaurantRepository,
-                                    UserCrudRepository userRepository) {
+    public HistoryVotingServiceImpl(HistoryVotingCrudRepository repository, RestaurantCrudRepository restaurantRepository) {
         this.repository = repository;
         this.restaurantRepository = restaurantRepository;
-        this.userRepository = userRepository;
     }
 
     @Transactional
     @Override
-    public HistoryVoting createOrUpdate(int userId, int restaurantId) {
+    public HistoryVoting createOrUpdate(User user, int restaurantId) {
+        Assert.notNull(user, "user must not be null");
+
         LocalDateTime currentDateTime = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
         if (!isCorrectTime(currentDateTime)) {
             throw new IncorrectTimeVoting("Incorrect time for voting");
         }
 
         Optional<HistoryVoting> optional = Optional.ofNullable(repository
-                .getByUserIdAndDate(userId, LocalDateTime.of(currentDateTime.toLocalDate(), LocalTime.MIN)));
+                .getByUserIdAndDate(user.getId(), LocalDateTime.of(currentDateTime.toLocalDate(), LocalTime.MIN)));
         if (!optional.isPresent()) {
-            User user = userRepository.getOne(userId);
             Restaurant restaurant = restaurantRepository.getOne(restaurantId);
             return repository.save(new HistoryVoting(null, currentDateTime, user, restaurant));
         } else {
@@ -67,24 +63,10 @@ public class HistoryVotingServiceImpl implements HistoryVotingService {
         }
     }
 
-    @Transactional
-    @Override
-    public void delete(int id) {
-        repository.deleteById(id);
-    }
-
-    @Override
-    public HistoryVoting get(int id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("Voting " + id + " not found"));
-    }
-
-    @Override
-    public List<HistoryVoting> getAll() {
-        return repository.findAll();
-    }
-
     @Override
     public List<Restaurant> resultVotingToDay(LocalDateTime dateTime) {
+        Assert.notNull(dateTime, "dateTime must not be null");
+
         AtomicLong maxVoices = new AtomicLong();
         List<Restaurant> listResult = new ArrayList<>();
         List<HistoryVoting> list = repository.getAllToCurrentDay(LocalDateTime.of(dateTime.toLocalDate(), LocalTime.MIN));

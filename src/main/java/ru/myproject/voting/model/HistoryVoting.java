@@ -77,8 +77,7 @@ public class HistoryVoting extends AbstractBaseEntity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         HistoryVoting that = (HistoryVoting) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(dateTimeVoting, that.dateTimeVoting);
+        return Objects.equals(dateTimeVoting, that.dateTimeVoting);
     }
 
     @Override

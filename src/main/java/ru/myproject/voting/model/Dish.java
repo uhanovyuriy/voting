@@ -80,8 +80,7 @@ public class Dish extends AbstractBaseEntity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Dish dish = (Dish) o;
-        return Objects.equals(id, dish.id) &&
-                Objects.equals(name, dish.name) &&
+        return Objects.equals(name, dish.name) &&
                 Objects.equals(price, dish.price);
     }
 
