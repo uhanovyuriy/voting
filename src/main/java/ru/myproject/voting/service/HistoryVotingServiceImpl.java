@@ -69,7 +69,8 @@ public class HistoryVotingServiceImpl implements HistoryVotingService {
 
         AtomicLong maxVoices = new AtomicLong();
         List<Restaurant> listResult = new ArrayList<>();
-        List<HistoryVoting> list = repository.getAllToCurrentDay(LocalDateTime.of(dateTime.toLocalDate(), LocalTime.MIN));
+        List<HistoryVoting> list = repository.getAllToCurrentDay(LocalDateTime.of(dateTime.toLocalDate(), LocalTime.MIN),
+                LocalDateTime.of(dateTime.toLocalDate(), LocalTime.MAX));
         list.stream()
                 .collect(Collectors.groupingBy(HistoryVoting::getRestaurant, Collectors.counting()))
                 .entrySet().stream()

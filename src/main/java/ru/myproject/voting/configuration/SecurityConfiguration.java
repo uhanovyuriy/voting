@@ -39,14 +39,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers(URL_REST + "/register").permitAll()
-                .antMatchers(URL_REST + "/voting/**").hasRole("USER")
-                .antMatchers(URL_REST + "/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
+                .antMatchers(URL_REST + "/**").hasRole("ADMIN")
+                .antMatchers(URL_REST + "/voting/**").hasRole("USER")
                 .and()
                 .httpBasic();
     }
