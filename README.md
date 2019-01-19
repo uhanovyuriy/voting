@@ -7,7 +7,7 @@ API  построено на  **Spring-Boot** (security, web, data-jpa, cache, s
 В приложении имеется ограничение голосования по времени, выставляется в properties, 
 до етого времени пользователь может передумать и проголосовать заново.
 
-URI для доступа к ресурсам:
+#####URI для доступа к ресурсам:
 
  - voting/rest/users — работа с пользователями (ADMIN);
  - voting/rest/users/register - регистрация пользователей (PermitAll);
@@ -16,8 +16,13 @@ URI для доступа к ресурсам:
  - voting/rest/users/voting/result — результат голосования (ADMIN, USER);
  - voting/rest/users/admin/voting - операции над историей голосования (ADMIN);
 
+#####Стратегия кэширования:
 
-Несколько команд для приложения в CURL:
+Кэшируются данные при запросе ресторанов с меню, при внесении изменений в ресторан или меню, кэш чистится.
+Кэшируется авторизация пользователей, при внесении изменений в пользователя, кэш чистится.
+Кэшируется результат голосования, кэш чистится по расписанию в 00:00:00 кждого дня.
+
+#####Несколько команд для приложения в CURL:
 
 #### get All Users
 `curl -s http://localhost:8080/voting/rest/users --user admin1@gmail.com:admin`
@@ -26,7 +31,7 @@ URI для доступа к ресурсам:
 `curl -s http://localhost:8080/voting/rest/users/100001 --user admin1@gmail.com:admin`
 
 #### create User
-`curl -s -X POST -d '{"name":"newUser","email":"newEmail@yandex.ru","password":"newpassword","registered":"2018-12-28T10:15:00","roles":["ROLE_USER"]}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/voting/rest/users/register --user admin1@gmail.com:admin`
+`curl -s -X POST -d '{"name":"newUser","email":"newEmail@yandex.ru","password":"newpassword","registered":"2018-12-28T10:15:00","roles":["ROLE_USER"]}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/voting/rest/users/register`
 
 #### get All Restaurants (ADMIN, USER)
 `curl -s http://localhost:8080/voting/rest/users/restaurants --user admin1@gmail.com:admin`

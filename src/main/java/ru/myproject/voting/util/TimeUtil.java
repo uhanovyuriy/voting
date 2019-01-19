@@ -8,8 +8,7 @@ import java.time.LocalTime;
 public class TimeUtil {
 
     public static void checkCorrectTimeVoting(LocalDateTime ldt, LocalTime timeEndVoting) {
-        LocalTime startTime = LocalTime.MIN;
-        if (!(ldt.toLocalTime().isAfter(startTime) && ldt.toLocalTime().isBefore(timeEndVoting))) {
+        if (!ldt.toLocalTime().isBefore(timeEndVoting)) {
             throw new IncorrectTime("Incorrect time for voting");
         }
     }

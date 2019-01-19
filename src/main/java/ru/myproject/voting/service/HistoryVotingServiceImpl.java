@@ -1,7 +1,13 @@
 package ru.myproject.voting.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -26,7 +32,9 @@ import static ru.myproject.voting.util.TimeUtil.checkTimeViewResultVoting;
 
 
 @Service
+@CacheConfig(cacheNames = {"historyVoting"})
 public class HistoryVotingServiceImpl implements HistoryVotingService {
+    private final Logger log = LoggerFactory.getLogger(HistoryVotingService.class);
 
     @Value("${time.end.voting}")
     private LocalTime timeEndVoting;
@@ -43,26 +51,27 @@ public class HistoryVotingServiceImpl implements HistoryVotingService {
 
     @Transactional
     @Override
-    public HistoryVoting createOrUpdate(User user, int restaurantId) {
+    public void createOrUpdate(User user, int restaurantId) {
         Assert.notNull(user, "user must not be null");
         LocalDateTime currentDateTime = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
         checkCorrectTimeVoting(currentDateTime, timeEndVoting);
 
         Optional<HistoryVoting> optional = Optional.ofNullable(repository
                 .getByUserIdAndDate(user.getId(), LocalDateTime.of(currentDateTime.toLocalDate(), LocalTime.MIN)));
+        Restaurant restaurant = restaurantRepository.getOne(restaurantId);
         if (!optional.isPresent()) {
-            Restaurant restaurant = restaurantRepository.getOne(restaurantId);
-            return repository.save(new HistoryVoting(null, currentDateTime, user, restaurant));
+            repository.save(new HistoryVoting(null, currentDateTime, user, restaurant));
         } else {
             optional.ifPresent(h -> {
-                h.setRestaurant(restaurantRepository.getOne(restaurantId));
+                h.setRestaurant(restaurant);
                 h.setDateTimeVoting(currentDateTime);
             });
-            return repository.save(optional.get());
+            repository.save(optional.get());
         }
     }
 
     @Override
+    @Cacheable
     public List<Restaurant> resultVotingToDay(LocalDateTime dateTime) {
         Assert.notNull(dateTime, "dateTime must not be null");
         checkTimeViewResultVoting(dateTime, timeEndVoting);
@@ -88,5 +97,11 @@ public class HistoryVotingServiceImpl implements HistoryVotingService {
                     }
                 });
         return listResult;
+    }
+
+    @Scheduled(cron = "0 0 0 * * *")
+    @CacheEvict(allEntries = true)
+    public void clearCacheHistoryVoting() {
+        log.info("Clearing the cache of the results of the vote");
     }
 }
