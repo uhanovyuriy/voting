@@ -66,9 +66,9 @@ public class ExceptionInfoHandler {
     }
 
     @ResponseStatus(HttpStatus.PRECONDITION_FAILED)
-    @ExceptionHandler(IncorrectTimeVoting.class)
+    @ExceptionHandler(IncorrectTime.class)
     public ErrorInfo endTimeVoting(HttpServletRequest req, Exception e) {
-        return logAndGetErrorInfo(req, e, true, INCORRECT_TIME_VOTING);
+        return logAndGetErrorInfo(req, e, true, INCORRECT_TIME);
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)

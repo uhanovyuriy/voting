@@ -5,7 +5,7 @@ public enum ErrorType {
     DATA_NOT_FOUND("error.dataNotFound"),
     DATA_ERROR("error.dataError"),
     VALIDATION_ERROR("error.validationError"),
-    INCORRECT_TIME_VOTING("error.incorrectTimeVoting");
+    INCORRECT_TIME("error.incorrectTime");
 
     private final String errorCode;
 

@@ -10,7 +10,6 @@ import ru.myproject.voting.model.Restaurant;
 import ru.myproject.voting.model.User;
 import ru.myproject.voting.repository.HistoryVotingCrudRepository;
 import ru.myproject.voting.repository.RestaurantCrudRepository;
-import ru.myproject.voting.util.exception.IncorrectTimeVoting;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -21,6 +20,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+
+import static ru.myproject.voting.util.TimeUtil.checkCorrectTimeVoting;
+import static ru.myproject.voting.util.TimeUtil.checkTimeViewResultVoting;
 
 
 @Service
@@ -43,11 +45,8 @@ public class HistoryVotingServiceImpl implements HistoryVotingService {
     @Override
     public HistoryVoting createOrUpdate(User user, int restaurantId) {
         Assert.notNull(user, "user must not be null");
-
         LocalDateTime currentDateTime = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
-        if (!isCorrectTime(currentDateTime)) {
-            throw new IncorrectTimeVoting("Incorrect time for voting");
-        }
+        checkCorrectTimeVoting(currentDateTime, timeEndVoting);
 
         Optional<HistoryVoting> optional = Optional.ofNullable(repository
                 .getByUserIdAndDate(user.getId(), LocalDateTime.of(currentDateTime.toLocalDate(), LocalTime.MIN)));
@@ -66,6 +65,7 @@ public class HistoryVotingServiceImpl implements HistoryVotingService {
     @Override
     public List<Restaurant> resultVotingToDay(LocalDateTime dateTime) {
         Assert.notNull(dateTime, "dateTime must not be null");
+        checkTimeViewResultVoting(dateTime, timeEndVoting);
 
         AtomicLong maxVoices = new AtomicLong();
         List<Restaurant> listResult = new ArrayList<>();
@@ -88,10 +88,5 @@ public class HistoryVotingServiceImpl implements HistoryVotingService {
                     }
                 });
         return listResult;
-    }
-
-    private boolean isCorrectTime(LocalDateTime ldt) {
-        LocalTime startTime = LocalTime.MIN;
-        return ldt.toLocalTime().isAfter(startTime) && ldt.toLocalTime().isBefore(timeEndVoting);
     }
 }
