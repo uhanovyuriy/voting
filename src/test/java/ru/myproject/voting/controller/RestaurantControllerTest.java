@@ -18,8 +18,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static testdata.TestDataRestaurant.REST_URL;
-import static testdata.TestDataRestaurant.createNew;
+import static ru.myproject.voting.TestDataRestaurant.REST_URL;
+import static ru.myproject.voting.TestDataRestaurant.createNew;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(RestaurantController.class)

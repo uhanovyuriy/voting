@@ -5,16 +5,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.myproject.voting.TestDataDish;
 import ru.myproject.voting.model.Dish;
 import ru.myproject.voting.model.Restaurant;
-import testdata.TestDataDish;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static testdata.TestDataDish.menu;
-import static testdata.TestDataDish.menuNew;
-import static testdata.TestDataRestaurant.*;
+import static ru.myproject.voting.TestDataDish.NEW_DISH;
+import static ru.myproject.voting.TestDataRestaurant.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,11 +32,10 @@ public class RestaurantServiceImplTest {
     }
 
     @Test
-    public void testCreateMenu() {
-        List<Dish> created = service.createOrUpdateMenu(menuNew, RESTAURANT_ID);
-        List<Dish> expected = new ArrayList<>(menu);
-        expected.addAll(created);
-        List<Dish> actual = new ArrayList<>(service.get(RESTAURANT_ID).getDishes());
+    public void testCreateDish() {
+        Dish actual = service.createOrUpdateDish(NEW_DISH, RESTAURANT_ID);
+        Dish expected = new Dish(NEW_DISH);
+        expected.setId(actual.getId());
         TestDataDish.assertMatch(actual, expected);
     }
 }

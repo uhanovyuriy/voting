@@ -1,4 +1,4 @@
-package testdata;
+package ru.myproject.voting;
 
 import ru.myproject.voting.controller.RestaurantController;
 import ru.myproject.voting.model.Restaurant;
