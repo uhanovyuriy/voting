@@ -2,19 +2,17 @@ package ru.myproject.voting.model;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
-import java.util.Objects;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "history_voting")
 public class HistoryVoting extends AbstractBaseEntity {
 
-    @Column(name = "date_time_voting", nullable = false)
+    @Column(name = "date_voting", nullable = false)
     @NotNull
-    private LocalDateTime dateTimeVoting;
+    private LocalDate dateVoting;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -31,9 +29,9 @@ public class HistoryVoting extends AbstractBaseEntity {
     public HistoryVoting() {
     }
 
-    public HistoryVoting(Integer id, LocalDateTime dateTimeVoting, User user, Restaurant restaurant) {
+    public HistoryVoting(Integer id, LocalDate dateVoting, User user, Restaurant restaurant) {
         super.id = id;
-        this.dateTimeVoting = dateTimeVoting;
+        this.dateVoting = dateVoting;
         this.user = user;
         this.restaurant = restaurant;
     }
@@ -54,34 +52,20 @@ public class HistoryVoting extends AbstractBaseEntity {
         this.restaurant = restaurant;
     }
 
-    public LocalDateTime getDateTimeVoting() {
-        return dateTimeVoting;
+    public LocalDate getDateVoting() {
+        return dateVoting;
     }
 
-    public void setDateTimeVoting(LocalDateTime dateTimeVoting) {
-        this.dateTimeVoting = dateTimeVoting;
+    public void setDateVoting(LocalDate dateVoting) {
+        this.dateVoting = dateVoting;
     }
 
     @Override
     public String toString() {
         return "HistoryVoting{" +
-                "dateTimeVoting=" + dateTimeVoting +
+                "dateTimeVoting=" + dateVoting +
                 ", userId=" + user.getId() +
                 ", restaurantId=" + restaurant.getId() +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        HistoryVoting that = (HistoryVoting) o;
-        return Objects.equals(dateTimeVoting, that.dateTimeVoting);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), dateTimeVoting);
     }
 }

@@ -1,7 +1,6 @@
 package ru.myproject.voting.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -26,17 +25,18 @@ public class User extends AbstractBaseEntity {
 
     @Column(name = "password", nullable = false)
     @NotBlank
-    @Size(min = 6, max = 60)
+    @Size(min = 6, max = 100)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @Column(name = "registered", nullable = false)
+    @Column(name = "registered", columnDefinition = "timestamp default now()")
     @NotNull
-    private Date registered;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Date registered = new Date();
 
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
     @NotNull
-    private boolean enabled;
+    private boolean enabled = true;
 
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
@@ -123,22 +123,5 @@ public class User extends AbstractBaseEntity {
                 ", enabled=" + enabled +
                 ", roles=" + roles +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        User user = (User) o;
-        return Objects.equals(name, user.name) &&
-                Objects.equals(email, user.email) &&
-                Objects.equals(password, user.password) &&
-                Objects.equals(registered, user.registered);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), name, email, password, registered);
     }
 }
