@@ -4,18 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.myproject.voting.service.UserServiceImpl;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private static final String URL_REST = "/voting/rest/users";
+    private static final String URL_REST = "/api/rest";
 
     private final UserServiceImpl userService;
 
@@ -25,8 +28,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Override
@@ -43,10 +46,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(URL_REST + "/register").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers(URL_REST + "/users/register").permitAll()
+                .antMatchers(URL_REST + "/voting").hasAnyRole("ADMIN", "USER")
+                .antMatchers(URL_REST + "/restaurants").hasAnyRole("ADMIN", "USER")
                 .antMatchers(URL_REST + "/**").hasRole("ADMIN")
-                .antMatchers(URL_REST + "/voting/**").hasRole("USER")
+                .anyRequest().authenticated()
                 .and()
                 .httpBasic();
     }
