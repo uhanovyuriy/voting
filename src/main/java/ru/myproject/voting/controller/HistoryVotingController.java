@@ -4,45 +4,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import ru.myproject.voting.model.Restaurant;
-import ru.myproject.voting.model.User;
+import ru.myproject.voting.CustomUserDetails;
+import ru.myproject.voting.model.HistoryVoting;
 import ru.myproject.voting.service.HistoryVotingService;
-import ru.myproject.voting.service.RestaurantService;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = HistoryVotingController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class HistoryVotingController {
 
-    final static String REST_URL = "voting/rest/users/voting";
+    final static String REST_URL = "api/rest/voting";
 
     private final HistoryVotingService service;
 
-    private final RestaurantService restaurantService;
-
     @Autowired
-    public HistoryVotingController(HistoryVotingService service, RestaurantService restaurantService) {
+    public HistoryVotingController(HistoryVotingService service) {
         this.service = service;
-        this.restaurantService = restaurantService;
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void create(@AuthenticationPrincipal User user, @RequestParam("restaurantId") int restaurantId) {
-        service.createOrUpdate(user, restaurantId);
+    public void create(@AuthenticationPrincipal CustomUserDetails user, @RequestParam("restaurantId") int restaurantId) {
+        service.createOrUpdate(user.getUser(), restaurantId);
     }
 
-    @GetMapping(value = "/result")
-    public List<Restaurant> resultVotingToDay(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @RequestParam LocalDateTime dateTime) {
-        return service.resultVotingToDay(dateTime);
-    }
-
-    @GetMapping(value = "/restaurants")
-    public List<Restaurant> getAllRestaurants() {
-        return restaurantService.getAll();
+    @GetMapping
+    public List<HistoryVoting> getBetween(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam LocalDate startDate,
+                                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam LocalDate endDate) {
+        return service.getBetween(startDate, endDate);
     }
 }
