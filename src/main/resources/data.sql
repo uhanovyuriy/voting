@@ -12,10 +12,10 @@ ALTER SEQUENCE global_seq
 RESTART WITH 100000;
 
 INSERT INTO users (name, email, password)
-VALUES ('User1', 'user1@yandex.ru', '$2a$10$3gFJhDDDpb0aXDGlBIqZPuIcOoGWOv398Kmbi4Lyz/DEaFDjmrqKC'),
-       ('User2', 'user2@yandex.ru', '$2a$10$3gFJhDDDpb0aXDGlBIqZPuIcOoGWOv398Kmbi4Lyz/DEaFDjmrqKC'),
-       ('Admin1', 'admin1@gmail.com', '$2a$10$gyIatFXjxzzNvMMmJAYtYOEWk5/Ie1PwCVr8m2hgc0laPX.Yq4U4m'),
-       ('Admin2', 'admin2@gmail.com', '$2a$10$gyIatFXjxzzNvMMmJAYtYOEWk5/Ie1PwCVr8m2hgc0laPX.Yq4U4m');
+VALUES ('User1', 'user1@yandex.ru', '{noop}password'),
+       ('User2', 'user2@yandex.ru', '{noop}password'),
+       ('Admin1', 'admin1@gmail.com', '{noop}admin'),
+       ('Admin2', 'admin2@gmail.com', '{noop}admin');
 
 INSERT INTO user_roles (role, user_id)
 VALUES ('ROLE_USER', 100000),
@@ -30,27 +30,27 @@ VALUES ('rest1', 'address1'),
        ('rest3', 'address3'),
        ('rest4', 'address4');
 
-INSERT INTO dishes (restaurant_id, name, price)
-VALUES (100004, 'dishes1', 550),
-       (100004, 'dishes2', 850),
-       (100004, 'dishes3', 1550),
-       (100005, 'dishes1', 500),
-       (100005, 'dishes2', 800),
-       (100006, 'dishes1', 10000),
-       (100006, 'dishes2', 8500),
-       (100006, 'dishes3', 15500),
-       (100006, 'dishes4', 5500),
-       (100007, 'dishes1', 300),
-       (100007, 'dishes2', 150);
+INSERT INTO dishes (restaurant_id, name, price, created)
+VALUES (100004, 'dishes1', 550, '2018-10-28'),
+       (100004, 'dishes2', 850, '2018-10-28'),
+       (100004, 'dishes3', 1550, '2018-10-28'),
+       (100005, 'dishes1', 500, '2018-10-28'),
+       (100005, 'dishes2', 800, '2018-10-30'),
+       (100006, 'dishes1', 10000, '2018-10-28'),
+       (100006, 'dishes2', 8500, '2018-10-28'),
+       (100006, 'dishes3', 15500, '2018-10-29'),
+       (100006, 'dishes4', 5500, '2018-10-29'),
+       (100007, 'dishes1', 300, '2018-10-28'),
+       (100007, 'dishes2', 150, '2018-10-28');
 
-INSERT INTO history_voting (user_id, restaurant_id, date_time_voting)
-VALUES (100000, 100005, '2018-10-28 10:00:00'),
-       (100001, 100006, '2018-10-28 10:02:00'),
-       (100000, 100004, '2018-10-29 10:00:00'),
-       (100001, 100004, '2018-10-29 10:02:00'),
-       (100000, 100007, '2018-10-30 10:00:00'),
-       (100001, 100005, '2018-10-30 10:02:00'),
-       (100000, 100005, '2018-10-31 10:00:00'),
-       (100001, 100005, '2018-10-31 10:02:00'),
-       (100002, 100007, '2018-10-31 10:10:00'),
-       (100003, 100007, '2018-10-31 11:02:00');
+INSERT INTO history_voting (user_id, restaurant_id, date_voting)
+VALUES (100000, 100005, '2018-10-28'),
+       (100001, 100006, '2018-10-28'),
+       (100000, 100004, '2018-10-29'),
+       (100001, 100004, '2018-10-29'),
+       (100000, 100007, '2018-10-30'),
+       (100001, 100005, '2018-10-30'),
+       (100000, 100005, '2018-10-31'),
+       (100001, 100005, '2018-10-31'),
+       (100002, 100007, '2018-10-31'),
+       (100003, 100007, '2018-10-31');

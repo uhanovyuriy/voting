@@ -1,14 +1,18 @@
 package ru.myproject.voting.service;
 
-import ru.myproject.voting.model.Restaurant;
+import org.springframework.security.access.annotation.Secured;
+import ru.myproject.voting.model.HistoryVoting;
 import ru.myproject.voting.model.User;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
+
 
 public interface HistoryVotingService {
 
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     void createOrUpdate(User user, int restaurantId);
 
-    List<Restaurant> resultVotingToDay(LocalDateTime dateTime);
+    @Secured("ROLE_ADMIN")
+    List<HistoryVoting> getBetween(LocalDate startDate, LocalDate endDate);
 }

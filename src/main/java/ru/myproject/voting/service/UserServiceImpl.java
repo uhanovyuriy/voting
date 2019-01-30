@@ -1,13 +1,11 @@
 package ru.myproject.voting.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -22,22 +20,20 @@ import static ru.myproject.voting.util.UserUtil.prepareToSave;
 import static ru.myproject.voting.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
-@CacheConfig(cacheNames = {"users"})
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    private final BCryptPasswordEncoder passwordEncoder;
-
     private final UserCrudRepository repository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImpl(UserCrudRepository repository) {
         this.repository = repository;
-        this.passwordEncoder = new BCryptPasswordEncoder();
+        this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Transactional
     @Override
-    @CacheEvict(allEntries = true)
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
         return repository.save(prepareToSave(user, passwordEncoder));
@@ -45,7 +41,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Transactional
     @Override
-    @CacheEvict(allEntries = true)
     public void update(User user, int id) {
         Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(repository.save(prepareToSave(user, passwordEncoder)), id);
@@ -53,7 +48,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Transactional
     @Override
-    @CacheEvict(allEntries = true)
     public void delete(int id) {
         checkNotFoundWithId(repository.delete(id), id);
     }
@@ -74,7 +68,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Cacheable
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = getByEmail(email);
         return new CustomUserDetails(user);

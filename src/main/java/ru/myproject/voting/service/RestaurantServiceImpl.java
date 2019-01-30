@@ -13,7 +13,10 @@ import ru.myproject.voting.repository.DishCrudRepository;
 import ru.myproject.voting.repository.RestaurantCrudRepository;
 import ru.myproject.voting.util.exception.NotFoundException;
 
+import java.time.LocalDate;
 import java.util.List;
+
+import static ru.myproject.voting.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 @CacheConfig(cacheNames = {"restaurants"})
@@ -41,7 +44,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     @CacheEvict(allEntries = true)
     public void delete(int id) {
-        repository.deleteById(id);
+        checkNotFoundWithId(repository.delete(id), id);
     }
 
     @Override
@@ -59,19 +62,26 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Transactional
     @Override
     @CacheEvict(allEntries = true)
-    public List<Dish> createOrUpdateMenu(List<Dish> menu, int restaurantId) {
-        Assert.notNull(menu, "menu must not be null");
+    public Dish createOrUpdateDish(Dish dish, int id) {
+        Assert.notNull(dish, "dish must not be null");
 
-        Restaurant r = repository.getOne(restaurantId);
-        menu.forEach(dish -> dish.setRestaurant(r));
-        return dishRepository.saveAll(menu);
+        dish.setRestaurant(get(id));
+        return dishRepository.save(dish);
     }
 
     @Transactional
     @Override
     @CacheEvict(allEntries = true)
-    public void deleteMenu(int restaurantId) {
-        Restaurant r = repository.getOne(restaurantId);
-        dishRepository.deleteAllByRestaurant(r);
+    public void deleteDish(int id, int dishId) {
+        checkNotFoundWithId(dishRepository.delete(dishId, id), dishId);
+    }
+
+    @Override
+    @Cacheable
+    public List<Dish> getDishesForRestaurantBetweenDates(int id, LocalDate startDate, LocalDate endDate) {
+        Assert.notNull(startDate, "startDate must not be null");
+        Assert.notNull(endDate, "endDate  must not be null");
+
+        return dishRepository.getBetween(id, startDate, endDate);
     }
 }
