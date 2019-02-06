@@ -7,12 +7,9 @@ public class CustomUserDetails extends org.springframework.security.core.userdet
 
     private User user;
 
-    private String password;
-
     public CustomUserDetails(User user) {
         super(user.getName(), user.getPassword(), true, true, true, true, user.getRoles());
         this.user = user;
-        this.password = user.getPassword();
     }
 
     public User getUser() {

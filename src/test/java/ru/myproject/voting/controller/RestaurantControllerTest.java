@@ -26,16 +26,16 @@ import static ru.myproject.voting.TestDataRestaurant.createNew;
 public class RestaurantControllerTest {
 
     @Autowired
-    MockMvc mockMvc;
+    public MockMvc mockMvc;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    public ObjectMapper objectMapper;
 
     @MockBean
-    RestaurantServiceImpl service;
+    public RestaurantServiceImpl service;
 
     @MockBean
-    UserServiceImpl userService;
+    public UserServiceImpl userService;
 
     @Test
     @WithMockUser(value = "admin", roles = "ADMIN")

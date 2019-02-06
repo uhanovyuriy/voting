@@ -14,10 +14,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = HistoryVotingController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "api/rest/voting", produces = MediaType.APPLICATION_JSON_VALUE)
 public class HistoryVotingController {
-
-    final static String REST_URL = "api/rest/voting";
 
     private final HistoryVotingService service;
 

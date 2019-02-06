@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.myproject.voting.TestDataDish;
 import ru.myproject.voting.model.Dish;
@@ -20,18 +21,21 @@ public class RestaurantServiceImplTest {
     private RestaurantService service;
 
     @Test
+    @WithMockUser(value = "admin", roles = "ADMIN")
     public void testCreate() {
         Restaurant created = service.createOrUpdate(createNew);
         assertMatch(service.getAll(), RESTAURANT1, RESTAURANT2, RESTAURANT3, RESTAURANT4, created);
     }
 
     @Test
+    @WithMockUser(value = "admin", roles = "ADMIN")
     public void testGet() {
         Restaurant actual = service.get(RESTAURANT1.getId());
         assertMatch(actual, RESTAURANT1);
     }
 
     @Test
+    @WithMockUser(value = "admin", roles = "ADMIN")
     public void testCreateDish() {
         Dish actual = service.createOrUpdateDish(NEW_DISH, RESTAURANT_ID);
         Dish expected = new Dish(NEW_DISH);
