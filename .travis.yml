@@ -4,4 +4,4 @@ before_install:
 - chmod +x mvnw
 
 script:
-- mvn clean verify
+- mvn clean verify -DskipTests=true
