@@ -1,25 +1,29 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/33debddccd5242c49ceaf51c86d71467)](https://www.codacy.com/app/YorikUh/voting?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=uhanovyuriy/voting&amp;utm_campaign=Badge_Grade)
 
-## REST API по принятию решения где пообедать на текущий день, на основе голосования
+## REST API to decide where to have lunch for the current day, based on voting
 
-API  построено на  **Spring-Boot** (security, web, data-jpa, cache, security-test, test), для тестирования приложения используется **HSQLDB** (in memory). 
+The API is built on **Spring-Boot** (security, web, data-jpa, cache, security-test, test), 
+for testing the application is used **HSQLDB** (in memory). 
 
-В приложении имеется ограничение голосования по времени, выставляется в properties, 
-до этого времени пользователь может передумать и проголосовать заново.
+The application has a time limit for voting, the time is set in the properties, 
+the user can change his mind before that time and change voice.
 
-##### URI для доступа к ресурсам:
+##### URI to access resources:
 
- - api/rest/users — работа с пользователями (ADMIN);
- - api/rest/users/register - регистрация пользователей (PermitAll);
- - api/rest/restaurants — работа с ресторанами (ADMIN, USER);
- - api/rest/restaurants/"restaurantId"/dishes — работа с dishes (ADMIN, USER);
- - api/rest/voting — голосование (ADMIN, USER);
+ - api/rest/users — working with users (ADMIN);
+ - api/rest/users/register - registered users (PermitAll);
+ - api/rest/restaurants — working with restaurants (ADMIN, USER);
+ - api/rest/restaurants/"restaurantId"/dishes — working with dishes (ADMIN, USER);
+ - api/rest/voting — voting (ADMIN, USER);
 
-##### Стратегия кэширования:
+##### Caching strategy:
 
-Кэшируются данные при запросе ресторанов с меню, при внесении изменений в ресторан или меню, кэш чистится.
+Caching authorisation data, when changes are made to the user database, the cache is cleared.
+Data is cached at the request of restaurants and dishes, when changes are made to restaurants or dishes, 
+the cache is cleared.
+Idle - 5 minutes, live time - 10 minutes, max elements restaurants cache - 200, users - 1000.
 
-##### Несколько команд для приложения в CURL:
+##### Several commands for the application in CURL:
 
 #### get All Users
 `curl -s http://localhost:8080/api/rest/users --user admin1@gmail.com:admin`

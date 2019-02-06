@@ -1,6 +1,9 @@
 package ru.myproject.voting.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,6 +23,7 @@ import static ru.myproject.voting.util.UserUtil.prepareToSave;
 import static ru.myproject.voting.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
+@CacheConfig(cacheNames = {"users"})
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserCrudRepository repository;
@@ -32,6 +36,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
+    @CacheEvict(allEntries = true)
     @Transactional
     @Override
     public User create(User user) {
@@ -39,6 +44,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return repository.save(prepareToSave(user, passwordEncoder));
     }
 
+    @CacheEvict(allEntries = true)
     @Transactional
     @Override
     public void update(User user, int id) {
@@ -46,6 +52,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         checkNotFoundWithId(repository.save(prepareToSave(user, passwordEncoder)), id);
     }
 
+    @CacheEvict(allEntries = true)
     @Transactional
     @Override
     public void delete(int id) {
@@ -67,6 +74,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return repository.findUsersByEmail(email).orElseThrow(() -> new NotFoundException("User " + email + "not found"));
     }
 
+    @Cacheable(key = "#email")
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = getByEmail(email);
