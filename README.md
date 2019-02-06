@@ -1,5 +1,10 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/33debddccd5242c49ceaf51c86d71467)](https://www.codacy.com/app/YorikUh/voting?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=uhanovyuriy/voting&amp;utm_campaign=Badge_Grade)
 
+[![Travis][build-badge]][build]
+
+[build-badge]: https://img.shields.io/travis/uhanovyuriy/voting/master.png?style=flat-square
+[build]: https://travis-ci.org/uhanovyuriy/voting.svg?branch=master
+
 ## REST API to decide where to have lunch for the current day, based on voting
 
 The API is built on **Spring-Boot** (security, web, data-jpa, cache, security-test, test), 
