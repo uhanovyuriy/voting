@@ -3,7 +3,9 @@ package ru.myproject.voting;
 import ru.myproject.voting.controller.RestaurantController;
 import ru.myproject.voting.model.Restaurant;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.myproject.voting.model.AbstractBaseEntity.START_SEQ;
@@ -20,6 +22,10 @@ public class TestDataRestaurant {
     public static final Restaurant RESTAURANT4 = new Restaurant(RESTAURANT_ID + 3, "rest4", "address4");
 
     public static Restaurant createNew = new Restaurant(null, "restNew", "addressNew");
+
+    public static List<Restaurant> getRestaurants() {
+        return new ArrayList<>(List.of(RESTAURANT1, RESTAURANT2, RESTAURANT3, RESTAURANT4));
+    }
 
     public static void assertMatch(Restaurant actual, Restaurant expected) {
         assertThat(actual).isEqualTo(expected);
