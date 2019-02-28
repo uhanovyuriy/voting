@@ -24,7 +24,7 @@ public class TestDataRestaurant {
     public static Restaurant createNew = new Restaurant(null, "restNew", "addressNew");
 
     public static List<Restaurant> getRestaurants() {
-        return new ArrayList<>(List.of(RESTAURANT1, RESTAURANT2, RESTAURANT3, RESTAURANT4));
+        return new ArrayList<>(Arrays.asList(RESTAURANT1, RESTAURANT2, RESTAURANT3, RESTAURANT4));
     }
 
     public static void assertMatch(Restaurant actual, Restaurant expected) {
